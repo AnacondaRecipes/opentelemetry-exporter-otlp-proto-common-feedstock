@@ -37,6 +37,9 @@ about:
   license: Apache-2.0
   license_file: LICENSE
   home: https://opentelemetry.io/
+  dev_url: https://github.com/open-telemetry/opentelemetry-python/tree/main/exporter/opentelemetry-exporter-otlp-proto-common
+  doc_url: https://opentelemetry.io/docs/
+  description: This library is provided as a convenience to encode to Protobuf. 
 
 extra:
   recipe-maintainers:
