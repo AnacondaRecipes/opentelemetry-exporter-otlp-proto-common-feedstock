@@ -49,6 +49,7 @@ extra:
     reason: Dependency for chainlit
   recipe-maintainers:
     - ianaobi
+    - bkreider
   recipe-maintainers:
     - conda-forge/opentelemetry-proto
     - rxm7706
