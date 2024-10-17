@@ -38,8 +38,8 @@ test:
     - python -m unittest discover tests
   requires:
     - pip
-    - opentelemetry-api
-    - opentelemetry-sdk
+    - opentelemetry-api =={{ version }}
+    - opentelemetry-sdk =={{ version }}
   source_files:
     - tests
 
