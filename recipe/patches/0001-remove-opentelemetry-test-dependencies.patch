@@ -8,10 +8,10 @@ Subject: [PATCH] remove opentelemetry test dependencies
  1 file changed, 316 deletions(-)
 
 diff --git a/tests/test_metrics_encoder.py b/tests/test_metrics_encoder.py
-index 6d68b48..0dfac29 100644
+index 0f435ae..4f2dbf6 100644
 --- a/tests/test_metrics_encoder.py
 +++ b/tests/test_metrics_encoder.py
-@@ -47,7 +47,6 @@ from opentelemetry.sdk.resources import Resource
+@@ -52,7 +52,6 @@ from opentelemetry.sdk.resources import Resource
  from opentelemetry.sdk.util.instrumentation import (
      InstrumentationScope as SDKInstrumentationScope,
  )
@@ -19,7 +19,7 @@ index 6d68b48..0dfac29 100644
  
  
  class TestOTLPMetricsEncoder(unittest.TestCase):
-@@ -73,321 +72,6 @@ class TestOTLPMetricsEncoder(unittest.TestCase):
+@@ -97,321 +96,8 @@ class TestOTLPMetricsEncoder(unittest.TestCase):
          ),
      )
  
@@ -337,10 +337,44 @@ index 6d68b48..0dfac29 100644
 -        )
 -        actual = encode_metrics(metrics_data)
 -        self.assertEqual(expected, actual)
--
+ 
++   
      def test_encode_histogram(self):
          metrics_data = MetricsData(
              resource_metrics=[
--- 
-2.45.2
-
+@@ -973,35 +659,3 @@ class TestOTLPMetricsEncoder(unittest.TestCase):
+         # pylint: disable=protected-access
+         actual = encode_metrics(metrics_data)
+         self.assertEqual(expected, actual)
+-
+-    def test_encoding_exception_reraise(self):
+-        # this number is too big to fit in a signed 64-bit proto field and causes a ValueError
+-        big_number = 2**63
+-        metrics_data = MetricsData(
+-            resource_metrics=[
+-                ResourceMetrics(
+-                    resource=Resource(
+-                        attributes={},
+-                        schema_url="resource_schema_url",
+-                    ),
+-                    scope_metrics=[
+-                        ScopeMetrics(
+-                            scope=SDKInstrumentationScope(
+-                                name="first_name",
+-                                version="first_version",
+-                                schema_url="insrumentation_scope_schema_url",
+-                            ),
+-                            metrics=[_generate_sum("sum_double", big_number)],
+-                            schema_url="instrumentation_scope_schema_url",
+-                        )
+-                    ],
+-                    schema_url="resource_schema_url",
+-                )
+-            ]
+-        )
+-        with self.assertRaises(EncodingException) as context:
+-            encode_metrics(metrics_data)
+-
+-        # assert that the EncodingException wraps the metric and original exception
+-        assert isinstance(context.exception.metric, Metric)
+-        assert isinstance(context.exception.original_exception, ValueError)
