@@ -12,7 +12,8 @@ source:
     - patches/0001-remove-opentelemetry-test-dependencies.patch
 
 build:
-  skip: True        # [py<38]
+  skip: True  # [py<38]
+  skip: True  # [s390x]   
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
