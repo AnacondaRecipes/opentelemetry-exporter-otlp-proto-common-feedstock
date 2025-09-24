@@ -1,47 +1,46 @@
 {% set name = "opentelemetry-exporter-otlp-proto-common" %}
-{% set version = "1.30.0" %}
+{% set version = "1.37.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/opentelemetry_exporter_otlp_proto_common-{{ version }}.tar.gz
-  sha256: ddbfbf797e518411857d0ca062c957080279320d6235a279f7b64ced73c13897
-  patches:
-    - patches/0001-remove-opentelemetry-test-dependencies.patch
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
+  sha256: c87a1bdd9f41fdc408d9cc9367bb53f8d2602829659f2b90be9f9d79d0bfe62c
 
 build:
-  skip: True  # [py<38]
-  skip: True  # [s390x]   
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<39]
 
 requirements:
-  build:
-    - m2-patch      # [win]
-    - patch         # [not win]
   host:
+    - pip
     - python
     - hatchling
-    - pip
   run:
     - python
     - opentelemetry-proto =={{ version }}
 
+# E   ModuleNotFoundError: No module named 'opentelemetry.test'
+# https://pypi.org/project/opentelemetry-test-utils, not in the main channel.
+{% set ignore_tests = " --ignore=tests/test_metrics_encoder.py" %}
+
 test:
+  source_files:
+    - tests
   imports:
-    - opentelemetry
     - opentelemetry.exporter.otlp.proto.common
   commands:
     - pip check
-    - python -m unittest discover tests
+    - pytest -v tests {{ ignore_tests }}
   requires:
     - pip
+    - pytest >=7.4.4
     - opentelemetry-api =={{ version }}
     - opentelemetry-sdk =={{ version }}
-  source_files:
-    - tests
+    - opentelemetry-semantic-conventions ==0.58b0
 
 about:
   summary: OpenTelemetry Protobuf encoding
