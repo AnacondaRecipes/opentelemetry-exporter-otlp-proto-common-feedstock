@@ -1,5 +1,5 @@
 {% set name = "opentelemetry-exporter-otlp-proto-common" %}
-{% set version = "1.37.0" %}
+{% set version = "1.38.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_')}}-{{ version }}.tar.gz
-  sha256: c87a1bdd9f41fdc408d9cc9367bb53f8d2602829659f2b90be9f9d79d0bfe62c
+  sha256: e333278afab4695aa8114eeb7bf4e44e65c6607d54968271a249c180b2cb605c
 
 build:
   number: 0
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: True  # [py<39]
 
 requirements:
   host:
@@ -40,17 +40,17 @@ test:
     - pytest >=7.4.4
     - opentelemetry-api =={{ version }}
     - opentelemetry-sdk =={{ version }}
-    - opentelemetry-semantic-conventions ==0.58b0
+    - opentelemetry-semantic-conventions ==0.59b0
 
 about:
-  summary: OpenTelemetry Protobuf encoding
+  home: https://opentelemetry.io
   license: Apache-2.0
   license_file: LICENSE
   license_family: Apache
-  home: https://opentelemetry.io/
-  dev_url: https://github.com/open-telemetry/opentelemetry-python/tree/main/exporter/opentelemetry-exporter-otlp-proto-common
-  doc_url: https://opentelemetry.io/docs/
+  summary: OpenTelemetry Protobuf encoding
   description: This library is provided as a convenience to encode to Protobuf. 
+  doc_url: https://opentelemetry.io/docs
+  dev_url: https://github.com/open-telemetry/opentelemetry-python/tree/main/exporter/opentelemetry-exporter-otlp-proto-common
 
 extra:
   recipe-maintainers:
