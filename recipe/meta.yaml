@@ -40,7 +40,7 @@ test:
     - pytest >=7.4.4
     - opentelemetry-api =={{ version }}
     - opentelemetry-sdk =={{ version }}
-    - opentelemetry-semantic-conventions ==0.61b0
+    - opentelemetry-semantic-conventions ==0.64b0
 
 about:
   home: https://opentelemetry.io
